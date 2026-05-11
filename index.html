@@ -1,5 +1,3 @@
-# Gerando o arquivo index.html para o usuário
-html_content = """
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -55,10 +53,10 @@ html_content = """
     </script>
     <style>
         body {
-            background-color: #020617;
+            background-color: #020617; /* Fundo hiper escuro (slate-950) */
             background-image: radial-gradient(#1e293b 1px, transparent 1px);
             background-size: 24px 24px;
-            color: #cbd5e1;
+            color: #cbd5e1; /* slate-300 */
         }
         .animate-delay-100 { animation-delay: 100ms; opacity: 0; }
         .animate-delay-200 { animation-delay: 200ms; opacity: 0; }
@@ -67,7 +65,7 @@ html_content = """
         .animate-delay-500 { animation-delay: 500ms; opacity: 0; }
         
         .glass-card {
-            background: rgba(15, 23, 42, 0.6);
+            background: rgba(15, 23, 42, 0.6); /* slate-900 com transparência */
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.06);
@@ -80,18 +78,22 @@ html_content = """
             border-color: #f59e0b;
         }
 
+        /* Mantém a impressão clara para economizar tinta do cliente */
         @media print {
             body { background: white !important; color: #0f172a !important; background-image: none !important; }
             .no-print, .blob-bg { display: none !important; }
             .print-break-inside-avoid { break-inside: avoid; }
             .glass-card, .video-card { box-shadow: none !important; border: 1px solid #e2e8f0 !important; background: white !important; }
             .text-white { color: #0f172a !important; }
+            .text-slate-400, .text-slate-300, .text-slate-500 { color: #475569 !important; }
             .animate-slide-up { animation: none !important; opacity: 1 !important; transform: none !important; }
+            .bg-slate-950, .bg-slate-900, .bg-slate-800 { background: #f8fafc !important; border: 1px solid #e2e8f0 !important;}
         }
     </style>
 </head>
 <body class="font-sans antialiased p-4 md:p-8 relative min-h-screen overflow-x-hidden">
 
+    <!-- Efeitos de Fundo Dark -->
     <div class="fixed top-0 left-0 w-full h-full overflow-hidden -z-10 blob-bg pointer-events-none">
         <div class="absolute top-[-10%] left-[-10%] w-96 h-96 bg-sunny-500/10 rounded-full mix-blend-screen filter blur-3xl opacity-50 animate-blob"></div>
         <div class="absolute top-[20%] right-[-10%] w-96 h-96 bg-blue-500/10 rounded-full mix-blend-screen filter blur-3xl opacity-50 animate-blob animation-delay-2000"></div>
@@ -99,6 +101,8 @@ html_content = """
     </div>
 
     <div class="max-w-6xl mx-auto">
+        
+        <!-- Ações -->
         <div class="flex justify-end mb-6 no-print animate-slide-up">
             <button onclick="window.print()" class="group relative inline-flex items-center justify-center gap-2 px-6 py-2.5 text-sm font-semibold text-slate-900 transition-all duration-200 bg-white border border-transparent rounded-full hover:bg-slate-200 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-slate-900 focus:ring-white">
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="transition-transform group-hover:-translate-y-0.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
@@ -106,6 +110,7 @@ html_content = """
             </button>
         </div>
 
+        <!-- Cabeçalho -->
         <header class="glass-card rounded-3xl p-8 md:p-10 mb-8 relative overflow-hidden animate-slide-up animate-delay-100 border-t border-t-white/10">
             <div class="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-sunny-500/20 to-transparent opacity-40 rounded-bl-full -z-10"></div>
             <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-8">
@@ -125,6 +130,7 @@ html_content = """
                 </div>
                 
                 <div class="bg-slate-900/80 text-white p-6 rounded-2xl w-full md:w-auto shadow-2xl relative overflow-hidden group border border-slate-700/50 backdrop-blur-md">
+                    <div class="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
                     <div class="relative z-10 flex flex-col items-center justify-center">
                         <span class="text-5xl font-display font-black text-sunny-400 mb-1 drop-shadow-md">10</span>
                         <span class="text-sm font-semibold tracking-widest uppercase text-slate-300">Reels Estratégicos</span>
@@ -138,6 +144,7 @@ html_content = """
             </div>
         </header>
 
+        <!-- Navegação das Abas -->
         <div class="flex justify-center mb-10 animate-slide-up animate-delay-100 no-print sticky top-4 z-50">
             <div class="bg-slate-900/60 backdrop-blur-md p-1.5 rounded-2xl inline-flex gap-2 border border-slate-700/50 shadow-lg">
                 <button onclick="switchTab('calendario')" id="tab-calendario" class="px-6 py-2.5 rounded-xl font-semibold text-sm transition-all duration-300 bg-slate-800 shadow-lg text-white border border-slate-700/50">Visão Geral</button>
@@ -145,96 +152,488 @@ html_content = """
             </div>
         </div>
 
+        <!-- ================= ABA 1: CALENDÁRIO ================= -->
         <div id="calendario-view" class="block">
+            <!-- Lógica de Distribuição -->
             <section class="mb-12 animate-slide-up animate-delay-200">
                 <h2 class="text-sm font-bold text-slate-500 uppercase tracking-widest mb-4 flex items-center gap-3">
                     <span>Lógica de Distribuição</span>
                     <div class="h-px bg-slate-800 flex-1"></div>
                 </h2>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                    <!-- B2B -->
                     <div class="glass-card p-6 rounded-2xl border-t-2 border-t-blue-500/50 hover:-translate-y-1 transition-transform duration-300">
+                        <div class="flex justify-between items-start mb-4">
+                            <div class="p-2 bg-blue-500/10 text-blue-400 rounded-lg border border-blue-500/20">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect><rect x="9" y="9" width="6" height="6"></rect><line x1="9" y1="1" x2="9" y2="4"></line><line x1="15" y1="1" x2="15" y2="4"></line><line x1="9" y1="20" x2="9" y2="23"></line><line x1="15" y1="20" x2="15" y2="23"></line><line x1="20" y1="9" x2="23" y2="9"></line><line x1="20" y1="14" x2="23" y2="14"></line><line x1="1" y1="9" x2="4" y2="9"></line><line x1="1" y1="14" x2="4" y2="14"></line></svg>
+                            </div>
+                            <span class="bg-slate-800 text-slate-300 px-2.5 py-1 rounded-md text-xs font-bold border border-slate-700">B2B</span>
+                        </div>
                         <h3 class="font-display font-bold text-lg text-white mb-1">Estratégia Corporativa</h3>
-                        <p class="text-slate-400 text-sm mb-4">Foco em B2B.</p>
+                        <p class="text-slate-400 text-sm mb-4">Empresas, indústrias e gestores.</p>
                         <div class="flex flex-col gap-1 text-sm font-medium text-slate-300">
-                            <span class="flex items-center gap-2"><div class="w-1.5 h-1.5 rounded-full bg-blue-400"></div> Terças e Quintas</span>
-                            <span class="text-slate-500 italic">7h–9h ou 18h–19h</span>
+                            <span class="flex items-center gap-2"><div class="w-1.5 h-1.5 rounded-full bg-blue-400 shadow-[0_0_5px_rgba(96,165,250,0.8)]"></div> Terças e Quintas</span>
+                            <span class="flex items-center gap-2 text-slate-500"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> 7h–9h ou 18h–19h</span>
                         </div>
                     </div>
+                    <!-- Residencial -->
                     <div class="glass-card p-6 rounded-2xl border-t-2 border-t-emerald-500/50 hover:-translate-y-1 transition-transform duration-300">
+                        <div class="flex justify-between items-start mb-4">
+                            <div class="p-2 bg-emerald-500/10 text-emerald-400 rounded-lg border border-emerald-500/20">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                            </div>
+                            <span class="bg-slate-800 text-slate-300 px-2.5 py-1 rounded-md text-xs font-bold border border-slate-700">Amplo</span>
+                        </div>
                         <h3 class="font-display font-bold text-lg text-white mb-1">Alcance & Educação</h3>
-                        <p class="text-slate-400 text-sm mb-4">Residencial e amplo.</p>
+                        <p class="text-slate-400 text-sm mb-4">Residencial e público geral.</p>
                         <div class="flex flex-col gap-1 text-sm font-medium text-slate-300">
-                            <span class="flex items-center gap-2"><div class="w-1.5 h-1.5 rounded-full bg-emerald-400"></div> Sábados</span>
-                            <span class="text-slate-500 italic">19h–20h</span>
+                            <span class="flex items-center gap-2"><div class="w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-[0_0_5px_rgba(52,211,153,0.8)]"></div> Sábados</span>
+                            <span class="flex items-center gap-2 text-slate-500"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> 19h–20h</span>
                         </div>
                     </div>
+                    <!-- Conversão -->
                     <div class="glass-card p-6 rounded-2xl border-t-2 border-t-purple-500/50 hover:-translate-y-1 transition-transform duration-300">
+                        <div class="flex justify-between items-start mb-4">
+                            <div class="p-2 bg-purple-500/10 text-purple-400 rounded-lg border border-purple-500/20">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                            </div>
+                            <span class="bg-slate-800 text-slate-300 px-2.5 py-1 rounded-md text-xs font-bold border border-slate-700">Fundo de Funil</span>
+                        </div>
                         <h3 class="font-display font-bold text-lg text-white mb-1">Foco em Conversão</h3>
-                        <p class="text-slate-400 text-sm mb-4">Geração de leads.</p>
+                        <p class="text-slate-400 text-sm mb-4">Geração de leads e reuniões.</p>
                         <div class="flex flex-col gap-1 text-sm font-medium text-slate-300">
-                            <span class="flex items-center gap-2"><div class="w-1.5 h-1.5 rounded-full bg-purple-400"></div> Sextas-feiras</span>
-                            <span class="text-slate-500 italic">12h–13h</span>
+                            <span class="flex items-center gap-2"><div class="w-1.5 h-1.5 rounded-full bg-purple-400 shadow-[0_0_5px_rgba(167,139,250,0.8)]"></div> Sextas-feiras</span>
+                            <span class="flex items-center gap-2 text-slate-500"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> 12h–13h</span>
                         </div>
                     </div>
                 </div>
             </section>
 
+            <!-- Cronograma Base -->
             <div class="space-y-12">
+                <!-- SEMANA 1 -->
                 <section class="animate-slide-up animate-delay-300">
                     <div class="flex items-center gap-4 mb-6">
-                        <div class="bg-white text-slate-900 px-4 py-2 rounded-lg font-display font-bold text-lg shadow-lg">Semana 1</div>
+                        <div class="bg-white text-slate-900 px-4 py-2 rounded-lg font-display font-bold text-lg shadow-[0_0_15px_rgba(255,255,255,0.15)]">Semana 1</div>
                         <h2 class="text-xl font-medium text-slate-300">Abertura e posicionamento</h2>
+                        <div class="h-px bg-slate-800 flex-1 ml-4 hidden md:block"></div>
                     </div>
+                    
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div class="video-card glass-card p-6 rounded-2xl border-t-4 border-t-blue-500/70">
-                            <div class="video-number w-8 h-8 rounded-full bg-slate-800 text-slate-300 mb-3 flex items-center justify-center font-bold">01</div>
-                            <h3 class="text-lg font-bold text-white mb-3 leading-tight">Energia não é custo fixo: é gestão</h3>
-                            <div class="bg-sunny-500/5 p-3 rounded-lg border border-sunny-500/10 mb-4">
-                                <p class="text-sm font-medium text-slate-200 italic">"Se a sua empresa trata energia como custo fixo, provavelmente existe dinheiro ficando na mesa."</p>
+                        <!-- VÍDEO 1 -->
+                        <div class="video-card glass-card p-6 rounded-2xl relative transition-all duration-300 hover:shadow-2xl hover:border-sunny-500/50 print-break-inside-avoid flex flex-col h-full border-t-4 border-t-blue-500/70">
+                            <div class="flex justify-between items-start mb-4">
+                                <div class="flex items-center gap-3">
+                                    <div class="video-number w-10 h-10 rounded-full bg-slate-800 text-slate-300 border border-slate-700 flex items-center justify-center font-display font-bold transition-colors duration-300">01</div>
+                                    <div><span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-blue-500/10 text-blue-300 border border-blue-500/20">Terça-feira</span></div>
+                                </div>
                             </div>
-                            <p class="text-xs text-slate-400 font-bold uppercase tracking-wider">CTA: Peça uma análise técnica</p>
+                            <h3 class="text-xl font-display font-bold text-white leading-tight mb-4">Energia não é custo fixo: é gestão</h3>
+                            <div class="flex flex-wrap gap-2 mb-5">
+                                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium bg-slate-800 text-slate-300 border border-slate-700">Pilar: Estratégia B2B</span>
+                                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium bg-slate-800 text-slate-300 border border-slate-700">Diretores e Gestores</span>
+                            </div>
+                            <p class="text-sm text-slate-400 mb-5 pb-5 border-b border-slate-800/50"><strong class="text-slate-200">Objetivo:</strong> Reposicionar a dor do cliente</p>
+                            <div class="relative bg-sunny-500/5 rounded-xl p-4 mb-5 flex-1 border border-sunny-500/10">
+                                <span class="text-[10px] font-bold uppercase tracking-wider text-sunny-400 block mb-1">Gancho (3 primeiros segundos)</span>
+                                <p class="text-sm font-medium text-slate-200 italic leading-relaxed">"Se a sua empresa trata energia como custo fixo, provavelmente existe dinheiro ficando na mesa."</p>
+                            </div>
+                            <div class="bg-slate-950/80 border border-slate-800 rounded-xl p-3.5 flex items-center gap-3">
+                                <div class="bg-slate-900 p-2 rounded-lg text-sunny-400 border border-slate-800">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                                </div>
+                                <div>
+                                    <span class="block text-[10px] text-slate-400 uppercase font-bold tracking-wider">CTA</span>
+                                    <span class="block text-sm font-semibold text-white">Peça uma análise técnica</span>
+                                </div>
+                            </div>
                         </div>
-                        <div class="video-card glass-card p-6 rounded-2xl border-t-4 border-t-blue-500/70">
-                            <div class="video-number w-8 h-8 rounded-full bg-slate-800 text-slate-300 mb-3 flex items-center justify-center font-bold">02</div>
-                            <h3 class="text-lg font-bold text-white mb-3 leading-tight">O que é BESS e por que importa?</h3>
-                            <div class="bg-sunny-500/5 p-3 rounded-lg border border-sunny-500/10 mb-4">
-                                <p class="text-sm font-medium text-slate-200 italic">"BESS não é só bateria. Para empresas, pode ser uma ferramenta de gestão."</p>
+
+                        <!-- VÍDEO 2 -->
+                        <div class="video-card glass-card p-6 rounded-2xl relative transition-all duration-300 hover:shadow-2xl hover:border-sunny-500/50 print-break-inside-avoid flex flex-col h-full border-t-4 border-t-blue-500/70">
+                            <div class="flex justify-between items-start mb-4">
+                                <div class="flex items-center gap-3">
+                                    <div class="video-number w-10 h-10 rounded-full bg-slate-800 text-slate-300 border border-slate-700 flex items-center justify-center font-display font-bold transition-colors duration-300">02</div>
+                                    <div><span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-blue-500/10 text-blue-300 border border-blue-500/20">Quinta-feira</span></div>
+                                </div>
                             </div>
-                            <p class="text-xs text-slate-400 font-bold uppercase tracking-wider">CTA: Salve este vídeo</p>
+                            <h3 class="text-xl font-display font-bold text-white leading-tight mb-4">O que é BESS e por que empresas olham pra isso?</h3>
+                            <div class="flex flex-wrap gap-2 mb-5">
+                                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium bg-slate-800 text-slate-300 border border-slate-700">BESS e armazenamento</span>
+                                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium bg-slate-800 text-slate-300 border border-slate-700">Indústrias e Varejo</span>
+                            </div>
+                            <p class="text-sm text-slate-400 mb-5 pb-5 border-b border-slate-800/50"><strong class="text-slate-200">Objetivo:</strong> Introduzir o conceito BESS</p>
+                            <div class="relative bg-sunny-500/5 rounded-xl p-4 mb-5 flex-1 border border-sunny-500/10">
+                                <span class="text-[10px] font-bold uppercase tracking-wider text-sunny-400 block mb-1">Gancho (3 primeiros segundos)</span>
+                                <p class="text-sm font-medium text-slate-200 italic leading-relaxed">"BESS não é só bateria. Para empresas, pode ser uma ferramenta de gestão energética."</p>
+                            </div>
+                            <div class="bg-slate-950/80 border border-slate-800 rounded-xl p-3.5 flex items-center gap-3">
+                                <div class="bg-slate-900 p-2 rounded-lg text-sunny-400 border border-slate-800">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline></svg>
+                                </div>
+                                <div>
+                                    <span class="block text-[10px] text-slate-400 uppercase font-bold tracking-wider">CTA</span>
+                                    <span class="block text-sm font-semibold text-white">Salve este vídeo</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </section>
-                <div class="p-6 bg-slate-900/50 rounded-2xl border border-slate-800 text-center backdrop-blur-sm">
-                    <p class="text-slate-400 mb-3 text-sm italic">Consulte a aba de roteiros para o detalhamento completo dos 10 vídeos.</p>
-                </div>
+
+                <!-- SEMANA 2 -->
+                <section class="animate-slide-up animate-delay-400">
+                    <div class="flex items-center gap-4 mb-6 mt-12">
+                        <div class="bg-white text-slate-900 px-4 py-2 rounded-lg font-display font-bold text-lg shadow-[0_0_15px_rgba(255,255,255,0.15)]">Semana 2</div>
+                        <h2 class="text-xl font-medium text-slate-300">Aprofundamento e alcance</h2>
+                        <div class="h-px bg-slate-800 flex-1 ml-4 hidden md:block"></div>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <!-- VÍDEO 3 -->
+                        <div class="video-card glass-card p-6 rounded-2xl relative transition-all duration-300 hover:shadow-2xl hover:border-sunny-500/50 print-break-inside-avoid flex flex-col h-full border-t-4 border-t-blue-500/70">
+                            <div class="flex items-center gap-3 mb-4">
+                                <div class="video-number w-10 h-10 rounded-full bg-slate-800 text-slate-300 border border-slate-700 flex items-center justify-center font-display font-bold">03</div>
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-blue-500/10 text-blue-300 border border-blue-500/20">Terça-feira</span>
+                            </div>
+                            <h3 class="text-lg font-display font-bold text-white leading-tight mb-4">Peak shaving: cortando picos</h3>
+                            <p class="text-xs text-slate-400 mb-4 border-b border-slate-800/50 pb-3"><strong class="text-slate-200">Público:</strong> Grandes consumidores</p>
+                            <div class="relative bg-sunny-500/5 rounded-xl p-4 mb-4 flex-1 border border-sunny-500/10">
+                                <p class="text-sm font-medium text-slate-200 italic">"Sua empresa pode não estar pagando caro pelo consumo, mas pelos picos."</p>
+                            </div>
+                            <div class="bg-slate-950/80 border border-slate-800 rounded-xl p-3 flex items-start gap-3">
+                                <div class="text-sunny-400 mt-1"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg></div>
+                                <div>
+                                    <span class="block text-[10px] text-slate-400 uppercase font-bold tracking-wider">CTA</span>
+                                    <span class="block text-xs font-semibold text-white">Solicite avaliação</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- VÍDEO 4 -->
+                        <div class="video-card glass-card p-6 rounded-2xl relative transition-all duration-300 hover:shadow-2xl hover:border-sunny-500/50 print-break-inside-avoid flex flex-col h-full border-t-4 border-t-blue-500/70">
+                            <div class="flex items-center gap-3 mb-4">
+                                <div class="video-number w-10 h-10 rounded-full bg-slate-800 text-slate-300 border border-slate-700 flex items-center justify-center font-display font-bold">04</div>
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-blue-500/10 text-blue-300 border border-blue-500/20">Quinta-feira</span>
+                            </div>
+                            <h3 class="text-lg font-display font-bold text-white leading-tight mb-4">Grid zero: gerar sem exportar</h3>
+                            <p class="text-xs text-slate-400 mb-4 border-b border-slate-800/50 pb-3"><strong class="text-slate-200">Público:</strong> Empresas com restrições</p>
+                            <div class="relative bg-sunny-500/5 rounded-xl p-4 mb-4 flex-1 border border-sunny-500/10">
+                                <p class="text-sm font-medium text-slate-200 italic">"Nem todo projeto solar precisa exportar energia para fazer sentido."</p>
+                            </div>
+                            <div class="bg-slate-950/80 border border-slate-800 rounded-xl p-3 flex items-start gap-3">
+                                <div class="text-sunny-400 mt-1"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg></div>
+                                <div>
+                                    <span class="block text-[10px] text-slate-400 uppercase font-bold tracking-wider">CTA</span>
+                                    <span class="block text-xs font-semibold text-white">Fale com a Sunny</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- VÍDEO 5 -->
+                        <div class="video-card glass-card p-6 rounded-2xl relative transition-all duration-300 hover:shadow-2xl hover:border-emerald-500/50 print-break-inside-avoid flex flex-col h-full border-t-4 border-t-emerald-500/70">
+                            <div class="flex items-center gap-3 mb-4">
+                                <div class="video-number w-10 h-10 rounded-full bg-slate-800 text-slate-300 border border-slate-700 flex items-center justify-center font-display font-bold">05</div>
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-300 border border-emerald-500/20">Sábado</span>
+                            </div>
+                            <h3 class="text-lg font-display font-bold text-white leading-tight mb-4">Energia por assinatura</h3>
+                            <p class="text-xs text-slate-400 mb-4 border-b border-slate-800/50 pb-3"><strong class="text-slate-200">Público:</strong> PMEs e residências</p>
+                            <div class="relative bg-sunny-500/5 rounded-xl p-4 mb-4 flex-1 border border-sunny-500/10">
+                                <p class="text-sm font-medium text-slate-200 italic">"Quer usar energia solar sem instalar placas no seu telhado?"</p>
+                            </div>
+                            <div class="bg-slate-950/80 border border-slate-800 rounded-xl p-3 flex items-start gap-3">
+                                <div class="text-sunny-400 mt-1"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg></div>
+                                <div>
+                                    <span class="block text-[10px] text-slate-400 uppercase font-bold tracking-wider">CTA</span>
+                                    <span class="block text-xs font-semibold text-white">Saiba sobre assinatura</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- SEMANAS 3 e 4 -->
+                <section class="animate-slide-up animate-delay-500">
+                    <div class="flex items-center gap-4 mb-6 mt-12">
+                        <div class="bg-white text-slate-900 px-4 py-2 rounded-lg font-display font-bold text-lg shadow-[0_0_15px_rgba(255,255,255,0.15)]">Semanas 3 e 4</div>
+                        <h2 class="text-xl font-medium text-slate-300">Identificação, Segurança e Conversão</h2>
+                        <div class="h-px bg-slate-800 flex-1 ml-4 hidden md:block"></div>
+                    </div>
+                    <div class="p-6 bg-slate-900/50 rounded-2xl border border-slate-800 text-center backdrop-blur-sm">
+                        <p class="text-slate-400 mb-3 text-sm">Acesse a aba <strong>"Roteiros dos Vídeos"</strong> para ver o detalhamento completo e os scripts de todos os 10 conteúdos desta campanha.</p>
+                        <button onclick="switchTab('roteiros')" class="inline-flex items-center gap-2 px-5 py-2 rounded-lg bg-slate-800 border border-slate-700 text-sunny-400 font-medium hover:bg-slate-700 hover:text-sunny-300 transition-colors">Ver scripts completos <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></button>
+                    </div>
+                </section>
             </div>
         </div>
 
+        <!-- ================= ABA 2: ROTEIROS DOS VÍDEOS ================= -->
         <div id="roteiros-view" class="hidden space-y-8">
-            <h2 class="text-2xl font-display font-bold text-white mb-6">Direção de Cena & Scripts</h2>
+            <div class="mb-8">
+                <h2 class="text-2xl font-display font-bold text-white">Scripts & Direção Criativa</h2>
+                <p class="text-slate-400 mt-1">Siga este direcionamento textual para a gravação dos materiais.</p>
+            </div>
+
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div class="glass-card rounded-2xl p-6 border-l-4 border-l-blue-500/70">
-                    <div class="flex items-center gap-3 mb-4">
-                        <span class="w-8 h-8 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 flex items-center justify-center font-bold text-xs">01</span>
-                        <h3 class="font-display font-bold text-white">Script: Energia vs Custo</h3>
+                
+                <!-- Roteiro 1 -->
+                <div class="glass-card rounded-2xl p-6 border-l-4 border-l-blue-500/70 flex flex-col">
+                    <div class="flex items-center gap-3 mb-4 border-b border-slate-800/50 pb-4">
+                        <span class="w-10 h-10 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 flex items-center justify-center font-display font-bold">01</span>
+                        <div>
+                            <h3 class="font-display font-bold text-white leading-tight">Energia não é custo fixo</h3>
+                            <p class="text-xs text-slate-400">Formato: Reel Dinâmico (Câmera)</p>
+                        </div>
                     </div>
-                    <p class="text-sm text-slate-300 leading-relaxed italic mb-4">"Muitos gestores pagam a conta como imposto. Mas multas e picos podem ser evitados com gestão ativa (BESS/Solar)."</p>
-                    <div class="bg-slate-950 p-2 rounded text-[11px] text-slate-500">FORMATO: Reel Falado com fatura na mão.</div>
-                </div>
-                <div class="glass-card rounded-2xl p-6 border-l-4 border-l-purple-500/70 bg-gradient-to-br from-slate-900 to-purple-900/20 border-0 ring-1 ring-purple-500/30">
-                    <div class="flex items-center gap-3 mb-4">
-                        <span class="w-8 h-8 rounded-full bg-purple-500/20 text-purple-300 flex items-center justify-center font-bold text-xs">10</span>
-                        <h3 class="font-display font-bold text-white">Script: Diagnóstico (Conversão)</h3>
+                    <div class="space-y-4 flex-1">
+                        <div class="bg-sunny-500/5 p-3 rounded-lg border border-sunny-500/10">
+                            <span class="text-[10px] font-bold uppercase text-sunny-400 block mb-1">Visual + Gancho (0-3s)</span>
+                            <p class="text-sm font-medium text-slate-200"><em>[Mostre uma fatura na mão]</em> "Se a sua empresa trata a energia como custo fixo, provavelmente tem dinheiro ficando na mesa."</p>
+                        </div>
+                        <div>
+                            <span class="text-[10px] font-bold uppercase text-slate-500 block mb-1">Corpo do Vídeo</span>
+                            <p class="text-sm text-slate-300 leading-relaxed">"Muitos gestores pagam a conta de luz como se fosse um imposto imutável. Mas o mercado mudou. Entre multas por ultrapassagem, horários de pico e falta de previsibilidade, o que falta não é cortar gasto... é gestão ativa. Com Mercado Livre, Solar ou armazenamento (BESS), a conta vira planejamento."</p>
+                        </div>
                     </div>
-                    <p class="text-sm text-slate-300 leading-relaxed italic mb-4">"A fatura esconde oportunidades. Nós analisamos seu perfil e traçamos o diagnóstico real."</p>
-                    <div class="bg-purple-600 p-2 rounded text-xs text-white font-bold text-center">CTA: Envie "DIAGNÓSTICO" no direct.</div>
+                    <div class="bg-slate-950/80 border border-slate-800 p-3 rounded-lg mt-4 text-white text-sm">
+                        <span class="text-[10px] font-bold uppercase text-slate-500 block">CTA Final</span>
+                        <p class="text-slate-200">"Peça uma análise técnica da Sunny no link da bio e pare de perder dinheiro."</p>
+                    </div>
                 </div>
+
+                <!-- Roteiro 2 -->
+                <div class="glass-card rounded-2xl p-6 border-l-4 border-l-blue-500/70 flex flex-col">
+                    <div class="flex items-center gap-3 mb-4 border-b border-slate-800/50 pb-4">
+                        <span class="w-10 h-10 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 flex items-center justify-center font-display font-bold">02</span>
+                        <div>
+                            <h3 class="font-display font-bold text-white leading-tight">O que é BESS?</h3>
+                            <p class="text-xs text-slate-400">Formato: B-Roll de indústria + Narração</p>
+                        </div>
+                    </div>
+                    <div class="space-y-4 flex-1">
+                        <div class="bg-sunny-500/5 p-3 rounded-lg border border-sunny-500/10">
+                            <span class="text-[10px] font-bold uppercase text-sunny-400 block mb-1">Visual + Gancho (0-3s)</span>
+                            <p class="text-sm font-medium text-slate-200"><em>[Vídeo de operação industrial rolando]</em> "BESS não é só bateria. Para empresas, pode ser uma ferramenta de gestão energética."</p>
+                        </div>
+                        <div>
+                            <span class="text-[10px] font-bold uppercase text-slate-500 block mb-1">Corpo do Vídeo</span>
+                            <p class="text-sm text-slate-300 leading-relaxed">"Sistemas de Armazenamento de Energia em Baterias, ou BESS, mudam a regra do jogo. Eles acumulam energia quando está barato (ou gerando solar) e injetam na sua empresa exatamente na hora em que a tarifa é mais cara (horário de ponta). Resultado? Fatura lá embaixo."</p>
+                        </div>
+                    </div>
+                    <div class="bg-slate-950/80 border border-slate-800 p-3 rounded-lg mt-4 text-white text-sm">
+                        <span class="text-[10px] font-bold uppercase text-slate-500 block">CTA Final</span>
+                        <p class="text-slate-200">"Se a sua empresa consome muita energia, salve este vídeo para não esquecer disso."</p>
+                    </div>
+                </div>
+
+                <!-- Roteiro 3 -->
+                <div class="glass-card rounded-2xl p-6 border-l-4 border-l-blue-500/70 flex flex-col">
+                    <div class="flex items-center gap-3 mb-4 border-b border-slate-800/50 pb-4">
+                        <span class="w-10 h-10 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 flex items-center justify-center font-display font-bold">03</span>
+                        <div>
+                            <h3 class="font-display font-bold text-white leading-tight">Peak Shaving</h3>
+                            <p class="text-xs text-slate-400">Formato: Gráfico/Lousa Explicativa</p>
+                        </div>
+                    </div>
+                    <div class="space-y-4 flex-1">
+                        <div class="bg-sunny-500/5 p-3 rounded-lg border border-sunny-500/10">
+                            <span class="text-[10px] font-bold uppercase text-sunny-400 block mb-1">Gancho (0-3s)</span>
+                            <p class="text-sm font-medium text-slate-200">"Sua empresa pode não estar pagando caro pelo consumo, mas sim pelos PICOS de energia."</p>
+                        </div>
+                        <div>
+                            <span class="text-[10px] font-bold uppercase text-slate-500 block mb-1">Corpo do Vídeo</span>
+                            <p class="text-sm text-slate-300 leading-relaxed">"Se você é Grupo A, sabe o que é demanda contratada. O problema é quando as máquinas ligam ao mesmo tempo, gerando um pico que estoura a demanda e gera multa. A técnica de *Peak Shaving* com baterias detecta esse pico e fornece a energia extra, 'raspando' a montanha e blindando sua fatura."</p>
+                        </div>
+                    </div>
+                    <div class="bg-slate-950/80 border border-slate-800 p-3 rounded-lg mt-4 text-white text-sm">
+                        <span class="text-[10px] font-bold uppercase text-slate-500 block">CTA Final</span>
+                        <p class="text-slate-200">"Mande sua fatura no link da bio para uma avaliação de demanda."</p>
+                    </div>
+                </div>
+
+                <!-- Roteiro 4 -->
+                <div class="glass-card rounded-2xl p-6 border-l-4 border-l-blue-500/70 flex flex-col">
+                    <div class="flex items-center gap-3 mb-4 border-b border-slate-800/50 pb-4">
+                        <span class="w-10 h-10 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 flex items-center justify-center font-display font-bold">04</span>
+                        <div>
+                            <h3 class="font-display font-bold text-white leading-tight">Grid Zero</h3>
+                            <p class="text-xs text-slate-400">Formato: Câmera + Texto Animado</p>
+                        </div>
+                    </div>
+                    <div class="space-y-4 flex-1">
+                        <div class="bg-sunny-500/5 p-3 rounded-lg border border-sunny-500/10">
+                            <span class="text-[10px] font-bold uppercase text-sunny-400 block mb-1">Gancho (0-3s)</span>
+                            <p class="text-sm font-medium text-slate-200">"Nem todo projeto solar precisa exportar energia para a rede para fazer sentido."</p>
+                        </div>
+                        <div>
+                            <span class="text-[10px] font-bold uppercase text-slate-500 block mb-1">Corpo do Vídeo</span>
+                            <p class="text-sm text-slate-300 leading-relaxed">"A concessionária travou a injeção do seu projeto solar por 'inversão de fluxo'? Isso não significa que você não pode ter energia solar. Com o sistema Grid Zero, nós dimensionamos o sistema para gerar exatamente o que você consome. Você economiza na fonte, sem precisar injetar nada na rua."</p>
+                        </div>
+                    </div>
+                    <div class="bg-slate-950/80 border border-slate-800 p-3 rounded-lg mt-4 text-white text-sm">
+                        <span class="text-[10px] font-bold uppercase text-slate-500 block">CTA Final</span>
+                        <p class="text-slate-200">"Foi reprovado pela concessionária? Chama a Sunny que a gente resolve."</p>
+                    </div>
+                </div>
+
+                <!-- Roteiro 5 -->
+                <div class="glass-card rounded-2xl p-6 border-l-4 border-l-emerald-500/70 flex flex-col">
+                    <div class="flex items-center gap-3 mb-4 border-b border-slate-800/50 pb-4">
+                        <span class="w-10 h-10 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center justify-center font-display font-bold">05</span>
+                        <div>
+                            <h3 class="font-display font-bold text-white leading-tight">Energia por Assinatura</h3>
+                            <p class="text-xs text-slate-400">Formato: Dinâmico / Dia a Dia</p>
+                        </div>
+                    </div>
+                    <div class="space-y-4 flex-1">
+                        <div class="bg-sunny-500/5 p-3 rounded-lg border border-sunny-500/10">
+                            <span class="text-[10px] font-bold uppercase text-sunny-400 block mb-1">Gancho (0-3s)</span>
+                            <p class="text-sm font-medium text-slate-200">"Quer usar energia solar sem instalar nenhuma placa no seu telhado?"</p>
+                        </div>
+                        <div>
+                            <span class="text-[10px] font-bold uppercase text-slate-500 block mb-1">Corpo do Vídeo</span>
+                            <p class="text-sm text-slate-300 leading-relaxed">"Se você aluga o imóvel ou não quer fazer obra, a energia por assinatura é a solução. A energia é gerada em uma fazenda solar longe de você e o crédito vai direto para a sua conta de luz, gerando descontos automáticos todos os meses. Sem investimento inicial."</p>
+                        </div>
+                    </div>
+                    <div class="bg-slate-950/80 border border-slate-800 p-3 rounded-lg mt-4 text-white text-sm">
+                        <span class="text-[10px] font-bold uppercase text-slate-500 block">CTA Final</span>
+                        <p class="text-slate-200">"Mande uma mensagem agora e saiba como assinar sua energia."</p>
+                    </div>
+                </div>
+
+                <!-- Roteiro 6 -->
+                <div class="glass-card rounded-2xl p-6 border-l-4 border-l-blue-500/70 flex flex-col">
+                    <div class="flex items-center gap-3 mb-4 border-b border-slate-800/50 pb-4">
+                        <span class="w-10 h-10 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 flex items-center justify-center font-display font-bold">06</span>
+                        <div>
+                            <h3 class="font-display font-bold text-white leading-tight">3 Sinais para Diagnóstico</h3>
+                            <p class="text-xs text-slate-400">Formato: Listicle (Lista visual na tela)</p>
+                        </div>
+                    </div>
+                    <div class="space-y-4 flex-1">
+                        <div class="bg-sunny-500/5 p-3 rounded-lg border border-sunny-500/10">
+                            <span class="text-[10px] font-bold uppercase text-sunny-400 block mb-1">Gancho (0-3s)</span>
+                            <p class="text-sm font-medium text-slate-200">"3 sinais de que sua empresa precisa olhar para energia com mais seriedade hoje."</p>
+                        </div>
+                        <div>
+                            <span class="text-[10px] font-bold uppercase text-slate-500 block mb-1">Corpo do Vídeo</span>
+                            <p class="text-sm text-slate-300 leading-relaxed">"1. Sua fatura varia todo mês, mesmo produzindo a mesma coisa. 2. Tem linha de 'multa por ultrapassagem' ou 'fator de potência' na conta e ninguém nota. 3. O financeiro não consegue prever o gasto pro próximo ano. Se deu check em um deles, a luz amarela acendeu."</p>
+                        </div>
+                    </div>
+                    <div class="bg-slate-950/80 border border-slate-800 p-3 rounded-lg mt-4 text-white text-sm">
+                        <span class="text-[10px] font-bold uppercase text-slate-500 block">CTA Final</span>
+                        <p class="text-slate-200">"Marque o responsável financeiro da sua empresa aqui embaixo."</p>
+                    </div>
+                </div>
+
+                <!-- Roteiro 7 -->
+                <div class="glass-card rounded-2xl p-6 border-l-4 border-l-blue-500/70 flex flex-col">
+                    <div class="flex items-center gap-3 mb-4 border-b border-slate-800/50 pb-4">
+                        <span class="w-10 h-10 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 flex items-center justify-center font-display font-bold">07</span>
+                        <div>
+                            <h3 class="font-display font-bold text-white leading-tight">BESS como Backup</h3>
+                            <p class="text-xs text-slate-400">Formato: Câmera + Impacto</p>
+                        </div>
+                    </div>
+                    <div class="space-y-4 flex-1">
+                        <div class="bg-sunny-500/5 p-3 rounded-lg border border-sunny-500/10">
+                            <span class="text-[10px] font-bold uppercase text-sunny-400 block mb-1">Visual + Gancho (0-3s)</span>
+                            <p class="text-sm font-medium text-slate-200"><em>[Luz pisca/apaga]</em> "Para hospitais e data centers, energia não é custo. É continuidade de operação."</p>
+                        </div>
+                        <div>
+                            <span class="text-[10px] font-bold uppercase text-slate-500 block mb-1">Corpo do Vídeo</span>
+                            <p class="text-sm text-slate-300 leading-relaxed">"Piscou, perdeu lote de produção, perdeu servidor, colocou vidas em risco. O BESS atua como um super Nobreak gigante. Caiu a rede, ele assume a carga em milissegundos. Sem barulho, sem cheiro de diesel e economizando na conta de luz todo dia."</p>
+                        </div>
+                    </div>
+                    <div class="bg-slate-950/80 border border-slate-800 p-3 rounded-lg mt-4 text-white text-sm">
+                        <span class="text-[10px] font-bold uppercase text-slate-500 block">CTA Final</span>
+                        <p class="text-slate-200">"Sua operação não pode parar? Converse com a equipe da Sunny."</p>
+                    </div>
+                </div>
+
+                 <!-- Roteiro 8 -->
+                 <div class="glass-card rounded-2xl p-6 border-l-4 border-l-blue-500/70 flex flex-col">
+                    <div class="flex items-center gap-3 mb-4 border-b border-slate-800/50 pb-4">
+                        <span class="w-10 h-10 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 flex items-center justify-center font-display font-bold">08</span>
+                        <div>
+                            <h3 class="font-display font-bold text-white leading-tight">Ordem de Decisão</h3>
+                            <p class="text-xs text-slate-400">Formato: Fluxograma Visual / Lousa</p>
+                        </div>
+                    </div>
+                    <div class="space-y-4 flex-1">
+                        <div class="bg-sunny-500/5 p-3 rounded-lg border border-sunny-500/10">
+                            <span class="text-[10px] font-bold uppercase text-sunny-400 block mb-1">Gancho (0-3s)</span>
+                            <p class="text-sm font-medium text-slate-200">"Sua empresa está em dúvida entre Mercado Livre, Solar, ou Baterias? A ordem importa muito."</p>
+                        </div>
+                        <div>
+                            <span class="text-[10px] font-bold uppercase text-slate-500 block mb-1">Corpo do Vídeo</span>
+                            <p class="text-sm text-slate-300 leading-relaxed">"Se você dimensionar um sistema solar gigante e depois for pro Mercado Livre, vai perder dinheiro. Primeiro, otimize a demanda. Depois, veja se o Mercado Livre faz sentido. Só então a gente dimensiona a Solar ou o BESS complementar. Estratégia não se faz de trás pra frente."</p>
+                        </div>
+                    </div>
+                    <div class="bg-slate-950/80 border border-slate-800 p-3 rounded-lg mt-4 text-white text-sm">
+                        <span class="text-[10px] font-bold uppercase text-slate-500 block">CTA Final</span>
+                        <p class="text-slate-200">"Siga a Sunny para aprender a jogar o jogo grande da energia."</p>
+                    </div>
+                </div>
+
+                <!-- Roteiro 9 -->
+                <div class="glass-card rounded-2xl p-6 border-l-4 border-l-emerald-500/70 flex flex-col">
+                    <div class="flex items-center gap-3 mb-4 border-b border-slate-800/50 pb-4">
+                        <span class="w-10 h-10 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center justify-center font-display font-bold">09</span>
+                        <div>
+                            <h3 class="font-display font-bold text-white leading-tight">Sistemas Híbridos</h3>
+                            <p class="text-xs text-slate-400">Formato: Estilo Arquitetura/Casa Inteligente</p>
+                        </div>
+                    </div>
+                    <div class="space-y-4 flex-1">
+                        <div class="bg-sunny-500/5 p-3 rounded-lg border border-sunny-500/10">
+                            <span class="text-[10px] font-bold uppercase text-sunny-400 block mb-1">Gancho (0-3s)</span>
+                            <p class="text-sm font-medium text-slate-200">"Sistema híbrido não é só jogar uma bateria na sua casa de luxo."</p>
+                        </div>
+                        <div>
+                            <span class="text-[10px] font-bold uppercase text-slate-500 block mb-1">Corpo do Vídeo</span>
+                            <p class="text-sm text-slate-300 leading-relaxed">"É inteligência e automação. O sistema decide sozinho: de dia, a placa alimenta a casa e enche a bateria. Caiu a noite? Ele puxa da bateria e não da concessionária. Faltou luz na rua? Sua casa nem pisca, o ar e o Wi-Fi continuam ligados. É segurança invisível."</p>
+                        </div>
+                    </div>
+                    <div class="bg-slate-950/80 border border-slate-800 p-3 rounded-lg mt-4 text-white text-sm">
+                        <span class="text-[10px] font-bold uppercase text-slate-500 block">CTA Final</span>
+                        <p class="text-slate-200">"Salve este vídeo se você quer construir uma casa energeticamente à prova de falhas."</p>
+                    </div>
+                </div>
+
+                <!-- Roteiro 10 (Destaque Dark) -->
+                <div class="glass-card rounded-2xl p-6 flex flex-col bg-gradient-to-br from-slate-900 to-purple-900/30 ring-2 ring-purple-500/50 ring-offset-2 ring-offset-slate-950 relative border-0">
+                    <div class="absolute -top-3 right-4 bg-purple-600 text-white text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full shadow-[0_0_15px_rgba(147,51,234,0.5)]">Vídeo Principal de Conversão</div>
+                    
+                    <div class="flex items-center gap-3 mb-4 border-b border-purple-500/20 pb-4 mt-2">
+                        <span class="w-10 h-10 rounded-full bg-purple-500/20 border border-purple-500/40 text-purple-300 flex items-center justify-center font-display font-bold">10</span>
+                        <div>
+                            <h3 class="font-display font-bold text-white leading-tight">Convite: Diagnóstico</h3>
+                            <p class="text-xs text-purple-300">Formato: Direto / Escritório / Conversa reta</p>
+                        </div>
+                    </div>
+                    <div class="space-y-4 flex-1">
+                        <div class="bg-slate-950/50 p-3 rounded-lg border border-purple-500/20">
+                            <span class="text-[10px] font-bold uppercase text-purple-400 block mb-1">Gancho (0-3s)</span>
+                            <p class="text-sm font-medium text-slate-200">"A fatura de energia da sua empresa esconde oportunidades que você ainda não viu."</p>
+                        </div>
+                        <div>
+                            <span class="text-[10px] font-bold uppercase text-slate-400 block mb-1">Corpo do Vídeo</span>
+                            <p class="text-sm text-slate-300 leading-relaxed">"Na Sunny, nós não empurramos placas solares para você. Nós pegamos a sua fatura, analisamos o seu perfil de consumo e traçamos o diagnóstico. Pode ser Mercado Livre, pode ser BESS, pode ser usina própria. Mas tudo começa olhando pros dados atuais."</p>
+                        </div>
+                    </div>
+                    <div class="bg-gradient-to-r from-purple-600 to-purple-800 p-3 rounded-lg mt-4 text-white text-sm shadow-lg border border-purple-500/50">
+                        <span class="text-[10px] font-bold uppercase text-purple-200 block">CTA Direto ao Ponto</span>
+                        <p class="font-bold">"Envie a palavra DIAGNÓSTICO aqui no direct e vamos agendar uma reunião técnica."</p>
+                    </div>
+                </div>
+
             </div>
         </div>
 
-        <footer class="mt-20 pt-8 border-t border-slate-800/80 text-center pb-12">
-            <div class="w-12 h-1 bg-sunny-500 rounded-full mx-auto mb-6"></div>
-            <p class="text-slate-400 text-sm">@sunny_energia — Planejamento Digital 2026</p>
+        <!-- Rodapé -->
+        <footer class="mt-20 pt-8 border-t border-slate-800/80 text-center flex flex-col items-center justify-center pb-12 animate-slide-up animate-delay-500 relative z-10">
+            <div class="w-12 h-1 bg-sunny-500 rounded-full mb-6 shadow-[0_0_10px_rgba(245,158,11,0.5)]"></div>
+            <p class="text-slate-400 text-sm font-medium">Estratégia de Conteúdo Digital desenvolvida para <strong class="text-white">@sunny_energia</strong></p>
+            <p class="text-xs text-slate-500 mt-2 uppercase tracking-widest">Confidencial & Estratégico</p>
         </footer>
     </div>
 
@@ -244,20 +643,26 @@ html_content = """
             const rotView = document.getElementById('roteiros-view');
             const tabCal = document.getElementById('tab-calendario');
             const tabRot = document.getElementById('tab-roteiros');
-            const active = 'px-6 py-2.5 rounded-xl font-semibold text-sm transition-all bg-slate-800 text-white border border-slate-700/50 shadow-lg';
-            const inactive = 'px-6 py-2.5 rounded-xl font-semibold text-sm transition-all text-slate-400 hover:text-white';
+
+            // Classes para botão Ativo (Dark Mode)
+            const activeClass = 'px-6 py-2.5 rounded-xl font-semibold text-sm transition-all duration-300 bg-slate-800 shadow-lg text-white border border-slate-700/50';
+            // Classes para botão Inativo (Dark Mode)
+            const inactiveClass = 'px-6 py-2.5 rounded-xl font-semibold text-sm transition-all duration-300 hover:text-white text-slate-400 hover:bg-slate-800/50';
+
             if(tab === 'calendario') {
-                calView.style.display = 'block'; rotView.style.display = 'none';
-                tabCal.className = active; tabRot.className = inactive;
+                calView.style.display = 'block';
+                rotView.style.display = 'none';
+                
+                tabCal.className = activeClass;
+                tabRot.className = inactiveClass;
             } else {
-                rotView.style.display = 'block'; calView.style.display = 'none';
-                tabRot.className = active; tabCal.className = inactive;
+                rotView.style.display = 'block';
+                calView.style.display = 'none';
+                
+                tabRot.className = activeClass;
+                tabCal.className = inactiveClass;
             }
         }
     </script>
 </body>
 </html>
-"""
-
-with open("index.html", "w", encoding="utf-8") as f:
-    f.write(html_content)
